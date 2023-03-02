@@ -12,7 +12,6 @@ local bufwinnr = vim.fn.bufwinnr
 local command = vim.api.nvim_command
 local get_current_buf = vim.api.nvim_get_current_buf
 local getchar = vim.fn.getchar
-local notify = vim.notify
 local set_current_buf = vim.api.nvim_set_current_buf
 
 -- TODO: remove `vim.fs and` after 0.8 release
@@ -67,11 +66,11 @@ end
 
 --- Shows an error that `bufnr` was not among the `state.buffers`
 --- @param buffer_number integer
+--- @return nil
 local function notify_buffer_not_found(buffer_number)
-  notify(
+  utils.notify(
     'Current buffer (' .. buffer_number .. ") not found in bufferline.nvim's list of buffers: " .. vim.inspect(state.buffers),
-    vim.log.levels.ERROR,
-    {title = 'barbar.nvim'}
+    vim.log.levels.ERROR
   )
 end
 
@@ -187,10 +186,9 @@ function api.goto_buffer(index)
   if buffer_number then
     set_current_buf(buffer_number)
   else
-    notify(
+    utils.notify(
       'E86: buffer at index ' .. index .. ' in list ' .. vim.inspect(state.buffers) .. ' does not exist.',
-      vim.log.levels.ERROR,
-      {title = 'barbar.nvim'}
+      vim.log.levels.ERROR
     )
   end
 end
@@ -202,8 +200,7 @@ function api.goto_buffer_relative(steps)
   render.get_updated_buffers()
 
   if #state.buffers < 1 then
-    notify('E85: There is no listed buffer', vim.log.levels.ERROR, {title = 'barbar.nvim'})
-    return
+    return utils.notify('E85: There is no listed buffer', vim.log.levels.ERROR)
   end
 
   local current_bufnr = render.set_current_win_listed_buffer()
@@ -211,11 +208,10 @@ function api.goto_buffer_relative(steps)
 
   if not idx then -- fall back to: 1. the alternate buffer, 2. the first buffer
     idx = utils.index_of(state.buffers, bufnr'#') or 1
-    notify(
+    utils.notify(
       "Couldn't find buffer #" .. current_bufnr .. ' in the list: ' .. vim.inspect(state.buffers) ..
         '. Falling back to buffer #' .. state.buffers[idx],
-      vim.log.levels.INFO,
-      {title = 'barbar.nvim'}
+      vim.log.levels.INFO
     )
   end
 
@@ -325,8 +321,7 @@ function api.move_current_buffer_to(idx)
   local from_idx = utils.index_of(state.buffers, current_bufnr)
 
   if from_idx == nil then
-    notify_buffer_not_found(current_bufnr)
-    return
+    return notify_buffer_not_found(current_bufnr)
   end
 
   move_buffer(from_idx, idx)
@@ -341,8 +336,7 @@ function api.move_current_buffer(steps)
   local idx = utils.index_of(state.buffers, current_bufnr)
 
   if idx == nil then
-    notify_buffer_not_found(current_bufnr)
-    return
+    return notify_buffer_not_found(current_bufnr)
   end
 
   move_buffer(idx, idx + steps)
@@ -413,11 +407,11 @@ function api.pick_buffer()
         if JumpMode.buffer_by_letter[letter] ~= nil then
           set_current_buf(JumpMode.buffer_by_letter[letter])
         else
-          notify("Couldn't find buffer", vim.log.levels.ERROR, {title = 'barbar.nvim'})
+          utils.notify("Couldn't find buffer", vim.log.levels.ERROR)
         end
       end
     else
-      notify("Invalid input", vim.log.levels.ERROR, {title = 'barbar.nvim'})
+      utils.notify('Invalid input', vim.log.levels.ERROR)
     end
   end)
 end
@@ -436,11 +430,11 @@ function api.pick_buffer_delete()
           elseif letter == ESC then
             break
           else
-            notify("Couldn't find buffer", vim.log.levels.ERROR, {title = 'barbar.nvim'})
+            utils.notify("Couldn't find buffer", vim.log.levels.ERROR)
           end
         end
       else
-        notify("Invalid input", vim.log.levels.ERROR, {title = 'barbar.nvim'})
+        utils.notify('Invalid input', vim.log.levels.ERROR)
       end
 
       render.update()

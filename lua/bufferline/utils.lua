@@ -4,9 +4,10 @@
 
 local fnamemodify = vim.fn.fnamemodify
 local get_hl_by_name = vim.api.nvim_get_hl_by_name
-local list_slice = vim.list_slice
-local set_hl = vim.api.nvim_set_hl
 local hlexists = vim.fn.hlexists
+local list_slice = vim.list_slice
+local notify = vim.notify
+local set_hl = vim.api.nvim_set_hl
 
 --- Generate a color.
 --- @param groups string[] the groups to source the color from.
@@ -142,6 +143,14 @@ return {
   --- @return T[] sliced
   list_slice_from_end = function(list, index_from_end)
     return list_slice(list, #list - index_from_end + 1)
+  end,
+
+  --- Use `vim.notify` with a `msg` and log `level`. Integrates with `nvim-notify`.
+  --- @param msg string
+  --- @param level 0|1|2|3|4|5
+  --- @return nil
+  notify = function(msg, level)
+    notify(msg, level, {title = 'barbar.nvim'})
   end,
 
   relative = relative,

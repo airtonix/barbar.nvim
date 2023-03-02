@@ -2,7 +2,6 @@ local bufnr = vim.fn.bufnr
 local command = vim.api.nvim_command
 local create_user_command = vim.api.nvim_create_user_command
 local get_current_buf = vim.api.nvim_get_current_buf
-local notify = vim.notify
 
 --- @type bufferline.api
 local api = require'bufferline.api'
@@ -24,6 +23,8 @@ local render = require'bufferline.render'
 
 --- @type bufferline.state
 local state = require'bufferline.state'
+
+local notify = require'bufferline.utils'.notify
 
 -------------------------------
 -- Section: `bufferline` module
@@ -59,9 +60,9 @@ function bufferline.setup(user_config)
     function(tbl)
       local index = tonumber(tbl.args)
       if not index then
-        notify('Invalid argument to `:BufferGoto`', vim.log.levels.ERROR, {title = 'barbar.nvim'})
-        return
+        return notify('Invalid argument to `:BufferGoto`', vim.log.levels.ERROR)
       end
+
       api.goto_buffer(index)
     end,
     {
