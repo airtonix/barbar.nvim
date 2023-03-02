@@ -190,15 +190,19 @@ end
 function api.goto_buffer_relative(steps)
   render.get_updated_buffers()
 
+  if #state.buffers < 1 then
+    notify('E85: There is no listed buffer', vim.log.levels.ERROR, {title = 'barbar.nvim'})
+    return
+  end
+
   local current_bufnr = render.set_current_win_listed_buffer()
   local idx = utils.index_of(state.buffers, current_bufnr)
 
   if not idx then -- fall back to: 1. the alternate buffer, 2. the first buffer
-    local alt_bufnr = bufnr'#'
-    idx = utils.index_of(state.buffers, alt_bufnr) and alt_bufnr or 1
+    idx = utils.index_of(state.buffers, bufnr'#') or 1
     notify(
-      "Couldn't find buffer " .. current_bufnr .. ' in the list: ' .. vim.inspect(state.buffers) ..
-        '. Falling back to buffer ' .. state.buffers[idx],
+      "Couldn't find buffer #" .. current_bufnr .. ' in the list: ' .. vim.inspect(state.buffers) ..
+        '. Falling back to buffer #' .. state.buffers[idx],
       vim.log.levels.INFO,
       {title = 'barbar.nvim'}
     )
