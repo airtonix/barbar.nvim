@@ -181,7 +181,18 @@ function api.goto_buffer(index)
     index = math.min(index, #state.buffers)
   end
 
-  set_current_buf(state.buffers[math.max(1, index)])
+  index = math.max(1, index)
+
+  local buffer_number = state.buffers[index]
+  if buffer_number then
+    set_current_buf(buffer_number)
+  else
+    notify(
+      'E86: buffer at index ' .. index .. ' in list ' .. vim.inspect(state.buffers) .. ' does not exist.',
+      vim.log.levels.ERROR,
+      {title = 'barbar.nvim'}
+    )
+  end
 end
 
 --- Go to the buffer a certain number of buffers away from the current buffer.
