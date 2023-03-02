@@ -34,6 +34,7 @@ local bufferline = {}
 
 --- Setup this plugin.
 --- @param user_config? table
+--- @return nil
 function bufferline.setup(user_config)
   -- Show the tabline
   vim.opt.showtabline = 2

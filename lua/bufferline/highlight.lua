@@ -69,6 +69,7 @@ hl.set_default_link('BufferDefaultOffset', 'BufferTabpageFill')
 --- @class bufferline.highlight
 return {
   --- Setup the highlight groups for this plugin.
+  --- @return nil
   setup = function()
     local fg_current = hl.fg_or_default({'Normal'}, '#efefef', 255)
     local fg_inactive = hl.fg_or_default({'TabLineFill'}, '#888888', 102)

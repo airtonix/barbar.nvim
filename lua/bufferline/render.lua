@@ -35,35 +35,16 @@ local tbl_contains = vim.tbl_contains
 local tbl_filter = vim.tbl_filter
 local win_get_buf = vim.api.nvim_win_get_buf
 
---- @type bufferline.animate
-local animate = require'bufferline.animate'
-
---- @type bbye
-local bbye = require'bufferline.bbye'
-
---- @type bufferline.buffer
-local Buffer = require'bufferline.buffer'
-
---- @type bufferline.highlight
-local highlight = require'bufferline.highlight'
-
---- @type bufferline.icons
-local icons = require'bufferline.icons'
-
---- @type bufferline.JumpMode
-local JumpMode = require'bufferline.jump_mode'
-
---- @type bufferline.Layout
-local Layout = require'bufferline.layout'
-
---- @type bufferline.options
-local options = require'bufferline.options'
-
---- @type bufferline.state
-local state = require'bufferline.state'
-
---- @type bufferline.utils
-local utils = require'bufferline.utils'
+local animate = require'bufferline.animate' --- @type bufferline.animate
+local bbye = require'bufferline.bbye' --- @type bbye
+local Buffer = require'bufferline.buffer' --- @type bufferline.buffer
+local highlight = require'bufferline.highlight' --- @type bufferline.highlight
+local icons = require'bufferline.icons' --- @type bufferline.icons
+local JumpMode = require'bufferline.jump_mode' --- @type bufferline.JumpMode
+local Layout = require'bufferline.layout' --- @type bufferline.Layout
+local options = require'bufferline.options' --- @type bufferline.options
+local state = require'bufferline.state' --- @type bufferline.state
+local utils = require'bufferline.utils' --- @type bufferline.utils
 
 --- The highlight to use based on the state of a buffer.
 local HL_BY_ACTIVITY = {'Inactive', 'Alternate', 'Visible', 'Current'}
@@ -200,6 +181,7 @@ end
 --- Select from `groups` while fitting within the provided `width`, discarding all indices larger than the last index that fits.
 --- @param groups bufferline.render.group[]
 --- @param width integer
+--- @return bufferline.render.group[]
 local function slice_groups_right(groups, width)
   local accumulated_width = 0
 
@@ -225,6 +207,7 @@ end
 --- Select from `groups` in reverse while fitting within the provided `width`, discarding all indices less than the last index that fits.
 --- @param groups bufferline.render.group[]
 --- @param width integer
+--- @return bufferline.render.group[]
 local function slice_groups_left(groups, width)
   local accumulated_width = 0
 
@@ -250,6 +233,7 @@ end
 
 --- Clears the tabline. Does not stop the tabline from being redrawn via autocmd.
 --- @param tabline? string
+--- @return nil
 local function set_tabline(tabline)
   last_tabline = tabline
   vim.opt.tabline = last_tabline
