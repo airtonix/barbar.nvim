@@ -67,6 +67,11 @@ function options.closable()
   return get('closable', true)
 end
 
+--- @return 'left'|'right' enabled
+function options.on_close_behavior()
+  return get('closable', 'right')
+end
+
 --- @return bufferline.options.diagnostics
 function options.diagnostics()
   return tbl_deep_extend('keep', get('diagnostics', {}), DEFAULT_DIAGNOSTICS)
